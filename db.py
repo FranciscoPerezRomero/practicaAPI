@@ -1,5 +1,6 @@
 import sqlite3
 
+# Inicializar base de datos
 def inicializar_db():
     # *Conexion a la base de datos
     con = sqlite3.connect("notas.db")
@@ -9,6 +10,7 @@ def inicializar_db():
     con.commit()
     con.close()
 
+# Agregar notas al sistema
 def insertar_nota(titulo, contenido, fecha_creacion):
     # *Conexion a la base de datos
     con = sqlite3.connect("notas.db")
@@ -16,8 +18,10 @@ def insertar_nota(titulo, contenido, fecha_creacion):
     # *Creación de consulta sqlite3
     cursor.execute("INSERT INTO notas (titulo,contenido,fecha_creación) VALUES (?,?,?)", (titulo, contenido, fecha_creacion))
     con.commit()
-    con.close()
+    con.close() 
+    return {'message':'Se ha creado el registro de forma exitosa'}
 
+# Mostrar registros
 def mostrar_registros():
     con = sqlite3.connect("notas.db")
     cursor = con.cursor()
@@ -26,8 +30,9 @@ def mostrar_registros():
     datos = cursor.fetchall()
     con.close()
     return datos
-    
 
+
+# Editar registros
 def editar_nota(id, titulo = None, contenido = None):
     con = sqlite3.connect("notas.db")
     cursor = con.cursor()
@@ -40,7 +45,7 @@ def editar_nota(id, titulo = None, contenido = None):
     cursor.execute('SELECT * FROM notas WHERE id = ?',(id,))
     data = cursor.fetchone()
     con.close()
-    print(data)
+    return data
 
 def eliminar_nota (id):
     con = sqlite3.connect("notas.db")
@@ -48,4 +53,4 @@ def eliminar_nota (id):
     cursor.execute('DELETE FROM notas WHERE id = ?', (id,))
     con.commit()
     con.close()
-    print('Registro eliminado')
+    return {'message':'Registro eliminado'}
